@@ -28,12 +28,14 @@
                     <textarea name="description" id="description" cols="13" rows="3"></textarea>
                 </div>
                 <div class="input-field">
-                    <label for="photo">Ajouter des photos :</label>
-                    <input type="file" name="photo" id="photo" />
+                    <label for="photo">Ajouter des photos :</label><br>
+                    <input type="file" name="photo1" id="photo" /><br>
+                    <input type="file" name="photo2" id="photo" /><br>
+                    <input type="file" name="photo3" id="photo" />
                 </div>
 			</div>
             <div class="row col s6 l6 offset-l5">
-				<input type="submit" name="add" value="Poster"class="btn is-success">
+				<input type="submit" name="add" value="Poster" class="btn is-success">
 			</div>
         </form>
     </div>
