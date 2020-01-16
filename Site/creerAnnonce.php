@@ -9,7 +9,7 @@
 <body>
 <center><h4>Poster une annonce</h4></center>
     <div class="row">
-        <form class="col s12" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+        <form class="col s12" action="<?php $_SERVER['PHP_SELF'] ?>" method="post" enctype='multipart/form-data'>
             <div class="row col s6 l6 m6 offset-l3">
                 <div class="input-field">
                     <label for="nom">Titre : </label>
@@ -29,9 +29,7 @@
                 </div>
                 <div class="input-field">
                     <label for="photo">Ajouter des photos :</label><br>
-                    <input type="file" name="photo1" id="photo" /><br>
-                    <input type="file" name="photo2" id="photo" /><br>
-                    <input type="file" name="photo3" id="photo" />
+                    <input type="file" name="photo1" id="photo1" /><br>
                 </div>
 			</div>
             <div class="row col s6 l6 offset-l5">
@@ -39,19 +37,50 @@
 			</div>
         </form>
     </div>
+    <a href="index.php">Retour au menu</a>
 </body>
 </html>
 
 <?php
     if (isset($_POST["add"])){
         include '../ActionsBDD/insertion_donnees.php';
+        include '../ActionsBDD/verification_donnees.php';
         if((!empty($_POST["titre"])) || (!empty($_POST["secteur"])) || (!empty($_POST["prix"])) || (!empty($_POST["description"]))){
-            $titre=$_POST["titre"];
             $secteur=$_POST["secteur"];
+            $titre=$_POST["titre"];
             $prix=$_POST["prix"];
             $description=$_POST["description"];
-            insererAnnonce($titre,$secteur,$prix,$description);
-            echo "Annonce ajoutée";
+            if (verifierSecteur($secteur)==true){
+                insererAnnonce($titre,$secteur,$prix,$description);
+                echo "Annonce ajoutée<br>";
+            }
+            else{
+                insererSecteur($secteur);
+                insererAnnonce($titre,$secteur,$prix,$description);
+            }
+            if (isset($_FILES["photo1"]['size'])){
+                $size=$_FILES["photo1"]['size'];
+                $nomFichier=$_FILES["photo1"]['name'];
+                $formats=array('.jpg','.jpeg','.gif','.png');
+                $extensionFichier=".".strtolower(substr(strrchr($nomFichier, '.'),1));
+                if ($_FILES["photo1"]['error'] >0){
+                    echo "Il y a eu une erreur lors du transfert";
+                }
+                if (!in_array($extensionFichier,$formats)){
+                    echo 'Pas le bon format de fichier';
+                    die;
+                }
+                $tmpName=$_FILES["photo1"]['tmp_name'];
+                $Name=strtolower(trim($titre))."1";
+                $nomFichier="img/".$Name.$extensionFichier;
+                $resultat=move_uploaded_file($tmpName,$nomFichier);
+
+                if ($resultat){
+                    echo "Transfert terminé";
+                }
+            }
+
+
         }
     }
 ?>
