@@ -24,4 +24,13 @@ function insererAnnonce($titre,$secteur,$prix,$description){
     $cur = ajouterParamPDO($cur,':descriptif', $description);
     $res = majDonneesPrepareesPDO($cur);
 }
+
+function lierImage($image,$ref){
+    $connexion = databaseConnexion();
+    $req = "INSERT INTO EHT_IMAGES(REFERENCE,NOM_IMAGE) VALUES (:ref,:img)";    
+    $cur = preparerRequetePDO($connexion, $req);
+    $cur = ajouterParamPDO($cur,':ref',$ref);
+    $cur = ajouterParamPDO($cur,':img',$image);
+    $res = majDonneesPrepareesPDO($cur);
+}
 ?>

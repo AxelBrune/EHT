@@ -11,19 +11,63 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Site d'annonces</title>
 </head>
 <body>
 <h1>Annonces</h1>
     <?php
-        var_dump(getAllAnnonces());
+        //var_dump(getAllAnnonces());
+        $annonces=getAllAnnonces();
+        foreach($annonces as $donnee){
+            if ($donnee["ACTIF"]==0){
+            /*$nomPhoto=strtolower(trim($donnee["TITRE"]."1"));
+            $url="img/".$nomPhoto.".jpg";*/
+                $img=getImages($donnee["REFERENCE"]);
+                ?>
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-content">
+                            <?php if (!empty($img)){ ?>
+                        <div class="col s3 m3">
+                                <br><br><br>
+                            <img src="<?php echo "img/".$img[0]["NOM_IMAGE"] ?>" alt="<?php $nomPhoto ?>" style="width: 100px; height:100px;">
+                        </div>
+                    <?php 
+                    }
+                    else{?>
+                        <div class="col s3 m3"> <?php
+                            //echo "<br><br><br><br>Pas de photos";?>
+                            <br><br><br><br>
+                            <i class="large material-icons">camera_alt</i>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                        <div class="col s9 m9">
+                        <br><br>
+                            <a href="voirAnnonce.php?annonce=<?php echo $donnee["REFERENCE"]?>" class="deep-purple-text"><h5><?php echo $donnee["TITRE"]; ?></h5></a>
+                            <br>
+                            <?php echo $donnee["DESCRIPTIF"]."<br>"; ?>
+                        </div>
+                            </div>
+                        </div>
+                    </div>
+                <br>
+                <?php
+            }
+
+        }
     ?>
 <br><br>
 <h1>Secteurs</h1>
     <?php
-        var_dump(getAllSecteurs());
+        //var_dump(getAllSecteurs());
+        $secteurs=getAllSecteurs();
+        foreach($secteurs as $sec){
+            echo $sec["LIBELLE_SECTEUR"]." ";
+        }
     ?>
-
 <br><br>
 <a href="creerAnnonce.php" class="waves-effect waves-light btn">Poster une annonce</a>
 </body>

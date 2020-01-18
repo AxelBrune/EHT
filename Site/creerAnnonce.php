@@ -44,13 +44,14 @@
 <?php
     if (isset($_POST["add"])){
         include '../ActionsBDD/insertion_donnees.php';
+        include '../ActionsBDD/lecture_donnees.php';
         include '../ActionsBDD/verification_donnees.php';
         if((!empty($_POST["titre"])) || (!empty($_POST["secteur"])) || (!empty($_POST["prix"])) || (!empty($_POST["description"]))){
             $secteur=$_POST["secteur"];
             $titre=$_POST["titre"];
             $prix=$_POST["prix"];
             $description=$_POST["description"];
-            if (verifierSecteur($secteur)==true){
+            if (verifierSecteur($secteur)){
                 insererAnnonce($titre,$secteur,$prix,$description);
                 echo "Annonce ajoutée<br>";
             }
@@ -71,16 +72,17 @@
                     die;
                 }
                 $tmpName=$_FILES["photo1"]['tmp_name'];
-                $Name=strtolower(trim($titre))."1";
-                $nomFichier="img/".$Name.$extensionFichier;
+               // $Name=strtolower(trim($titre))."1";
+                $Name=md5(uniqid(rand(),true));
+                $img=$Name.$extensionFichier;
+                $nomFichier="img/".$img;
                 $resultat=move_uploaded_file($tmpName,$nomFichier);
-
                 if ($resultat){
+                    $ref=getRefMax()-1;
+                    lierImage($img,$ref);
                     echo "Transfert terminé";
                 }
             }
-
-
         }
     }
 ?>

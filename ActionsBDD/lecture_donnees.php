@@ -9,6 +9,16 @@ function getAllAnnonces(){
     return $donneesRecues;
 }
 
+function getAnnonce($ref){
+    $connexion = databaseConnexion();
+    $req = "SELECT * FROM EHT_ANNONCE WHERE REFERENCE=:ref";
+    $donneesRecues = [];
+    $cur=preparerRequetePDO($connexion,$req);
+    ajouterParamPDO($cur,':ref',$ref);
+    LireDonneesPDOPreparee($cur,$donneesRecues);
+    return $donneesRecues[0];
+}
+
 function getAllSecteurs(){
     $connexion = databaseConnexion();
     $req = "SELECT LIBELLE_SECTEUR FROM EHT_SECTEUR";
@@ -31,5 +41,15 @@ function getNMax(){
     $donneesRecues = [];
     LireDonneesPDO1($connexion,$req,$donneesRecues);
     return $donneesRecues[0]["MAXI"];
+}
+
+function getImages($ref){
+    $connexion = databaseConnexion();
+    $req = "SELECT NOM_IMAGE FROM EHT_IMAGES WHERE REFERENCE=:ref";
+    $donneesRecues = [];
+    $cur=preparerRequetePDO($connexion,$req);
+    ajouterParamPDO($cur,':ref',$ref);
+    LireDonneesPDOPreparee($cur,$donneesRecues);
+    return $donneesRecues;
 }
 ?>
