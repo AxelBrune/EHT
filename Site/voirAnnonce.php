@@ -31,9 +31,13 @@
         $img=getImages($ref);
         //var_dump($img);
         if(!empty($img)){
+            foreach($img as $image){
     ?>
-    <center><img src="<?php echo "img/".$img[0]["NOM_IMAGE"] ?>" alt=""></center><br><br>
+    <img src="<?php echo "img/".$image["NOM_IMAGE"] ?>" alt="">
     <?php
+            }?>
+            <br>
+            <?php
         }
         else{?>
         <br><br>

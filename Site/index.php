@@ -15,14 +15,13 @@
     <title>Site d'annonces</title>
 </head>
 <body>
-<h1>Annonces</h1>
+<center><h1>Petites annonces</h1></center>
+<a href="creerAnnonce.php" class="waves-effect waves-light btn">Poster une annonce</a>
     <?php
         //var_dump(getAllAnnonces());
         $annonces=getAllAnnonces();
         foreach($annonces as $donnee){
             if ($donnee["ACTIF"]==0){
-            /*$nomPhoto=strtolower(trim($donnee["TITRE"]."1"));
-            $url="img/".$nomPhoto.".jpg";*/
                 $img=getImages($donnee["REFERENCE"]);
                 ?>
                     <div class="row">
@@ -60,15 +59,14 @@
         }
     ?>
 <br><br>
-<h1>Secteurs</h1>
+<!--<h1>Secteurs</h1>
     <?php
-        //var_dump(getAllSecteurs());
         $secteurs=getAllSecteurs();
         foreach($secteurs as $sec){
             echo $sec["LIBELLE_SECTEUR"]." ";
         }
     ?>
-<br><br>
-<a href="creerAnnonce.php" class="waves-effect waves-light btn">Poster une annonce</a>
+<br><br>!-->
+
 </body>
 </html>

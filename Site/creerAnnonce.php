@@ -28,8 +28,10 @@
                     <textarea name="description" id="description" cols="13" rows="3"></textarea>
                 </div>
                 <div class="input-field">
-                    <label for="photo">Ajouter des photos :</label><br>
+                    <label for="photo">Ajouter des photos (format .jpg) :</label><br>
                     <input type="file" name="photo1" id="photo1" /><br>
+                    <input type="file" name="photo2" id="photo2" /><br>
+                    <input type="file" name="photo3" id="photo3" /><br>
                 </div>
 			</div>
             <div class="row col s6 l6 offset-l5">
@@ -46,6 +48,7 @@
         include '../ActionsBDD/insertion_donnees.php';
         include '../ActionsBDD/lecture_donnees.php';
         include '../ActionsBDD/verification_donnees.php';
+        include '../ActionsBDD/uploadfichiers.php';
         if((!empty($_POST["titre"])) || (!empty($_POST["secteur"])) || (!empty($_POST["prix"])) || (!empty($_POST["description"]))){
             $secteur=$_POST["secteur"];
             $titre=$_POST["titre"];
@@ -60,9 +63,8 @@
                 insererAnnonce($titre,$secteur,$prix,$description);
             }
             if (isset($_FILES["photo1"]['size'])){
-                $size=$_FILES["photo1"]['size'];
                 $nomFichier=$_FILES["photo1"]['name'];
-                $formats=array('.jpg','.jpeg','.gif','.png');
+                $formats=array('.jpg');//'.jpeg','.gif','.png');
                 $extensionFichier=".".strtolower(substr(strrchr($nomFichier, '.'),1));
                 if ($_FILES["photo1"]['error'] >0){
                     echo "Il y a eu une erreur lors du transfert";
@@ -72,7 +74,53 @@
                     die;
                 }
                 $tmpName=$_FILES["photo1"]['tmp_name'];
-               // $Name=strtolower(trim($titre))."1";
+                $Name=md5(uniqid(rand(),true));
+                $img=$Name.$extensionFichier;
+                $nomFichier="img/".$img;
+                $resultat=move_uploaded_file($tmpName,$nomFichier);
+                if ($resultat){
+                    $ref=getRefMax()-1;
+                    lierImage($img,$ref);
+                    echo "Transfert terminé";
+                }
+                //uploadImage($_FILES["photo1"]);
+            }
+            if (isset($_FILES["photo2"]["size"])){
+                //uploadImage($_FILES["photo2"]);
+                $nomFichier=$_FILES["photo2"]['name'];
+                $formats=array('.jpg');//'.jpeg','.gif','.png');
+                $extensionFichier=".".strtolower(substr(strrchr($nomFichier, '.'),1));
+                if ($_FILES["photo2"]['error'] >0){
+                    echo "Il y a eu une erreur lors du transfert";
+                }
+                if (!in_array($extensionFichier,$formats)){
+                    echo 'Pas le bon format de fichier';
+                    die;
+                }
+                $tmpName=$_FILES["photo2"]['tmp_name'];
+                $Name=md5(uniqid(rand(),true));
+                $img=$Name.$extensionFichier;
+                $nomFichier="img/".$img;
+                $resultat=move_uploaded_file($tmpName,$nomFichier);
+                if ($resultat){
+                    $ref=getRefMax()-1;
+                    lierImage($img,$ref);
+                    echo "Transfert terminé";
+                }
+            }
+            if (isset($_FILES["photo3"]["size"])){
+                //uploadImage($_FILES["photo3"]);
+                $nomFichier=$_FILES["photo3"]['name'];
+                $formats=array('.jpg');//'.jpeg','.gif','.png');
+                $extensionFichier=".".strtolower(substr(strrchr($nomFichier, '.'),1));
+                if ($_FILES["photo3"]['error'] >0){
+                    echo "Il y a eu une erreur lors du transfert";
+                }
+                if (!in_array($extensionFichier,$formats)){
+                    echo 'Pas le bon format de fichier';
+                    die;
+                }
+                $tmpName=$_FILES["photo3"]['tmp_name'];
                 $Name=md5(uniqid(rand(),true));
                 $img=$Name.$extensionFichier;
                 $nomFichier="img/".$img;
