@@ -83,10 +83,8 @@
                     lierImage($img,$ref);
                     echo "Transfert terminé";
                 }
-                //uploadImage($_FILES["photo1"]);
             }
             if (isset($_FILES["photo2"]["size"])){
-                //uploadImage($_FILES["photo2"]);
                 $nomFichier=$_FILES["photo2"]['name'];
                 $formats=array('.jpg');//'.jpeg','.gif','.png');
                 $extensionFichier=".".strtolower(substr(strrchr($nomFichier, '.'),1));

@@ -15,6 +15,18 @@
     <title>Site d'annonces</title>
 </head>
 <body>
+<?php
+    if (isset($_GET["mode"])){
+        if($_GET["mode"]=="admin"){?>
+        <a href="index.php?mode=user" class="btn red">Passer en mode Utilisateur</a>
+             <?php
+        }
+        else{?>
+            <a href="index.php?mode=admin" class="btn red">Passer en mode Administrateur</a>
+            <?php
+        }
+    }
+?>
 <center><h1>Petites annonces</h1></center>
 <a href="creerAnnonce.php" class="waves-effect waves-light btn">Poster une annonce</a>
     <?php
@@ -35,8 +47,7 @@
                     <?php 
                     }
                     else{?>
-                        <div class="col s3 m3"> <?php
-                            //echo "<br><br><br><br>Pas de photos";?>
+                        <div class="col s3 m3">
                             <br><br><br><br>
                             <i class="large material-icons">camera_alt</i>
                         </div>
@@ -46,6 +57,15 @@
                         <div class="col s9 m9">
                         <br><br>
                             <a href="voirAnnonce.php?annonce=<?php echo $donnee["REFERENCE"]?>" class="deep-purple-text"><h5><?php echo $donnee["TITRE"]; ?></h5></a>
+                            <?php
+                                if(isset($_GET["mode"])){
+                                    if ($_GET["mode"]=="admin"){?>
+                                        <a href="modifierAnnonce.php?annonce=<?php echo $donnee["REFERENCE"]?>" class="btn yellow">Modifier</a>
+                                        <a href="modifierAnnonce.php?annonce=<?php echo $donnee["REFERENCE"]?>&amp;cacher=true" class="btn orange">Ne pas afficher</a>
+                                        <?php
+                                    }
+                                }
+                            ?>
                             <br>
                             <?php echo $donnee["DESCRIPTIF"]."<br>"; ?>
                         </div>
@@ -59,14 +79,14 @@
         }
     ?>
 <br><br>
-<!--<h1>Secteurs</h1>
+<h1>Secteurs</h1>
     <?php
         $secteurs=getAllSecteurs();
         foreach($secteurs as $sec){
             echo $sec["LIBELLE_SECTEUR"]." ";
         }
     ?>
-<br><br>!-->
+<br><br>
 
 </body>
 </html>
